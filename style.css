@@ -1,0 +1,281 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Container */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Headers */
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin: 2rem 0 1rem 0;
+    color: #2d3748;
+    padding: 0 2rem;
+    border-left: 4px solid #10b981;
+    padding-left: 1rem;
+}
+
+p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+/* Form Sections */
+div {
+    padding: 1rem 2rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.95rem;
+}
+
+/* Input Fields */
+input[type="number"] {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: #fafafa;
+    margin-bottom: 1rem;
+}
+
+input[type="number"]:focus {
+    outline: none;
+    border-color: #10b981;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    transform: translateY(-1px);
+}
+
+input[type="number"]::placeholder {
+    color: #9ca3af;
+}
+
+/* Dropdowns */
+select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 16px;
+    background: #fafafa;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 12px center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+select:focus {
+    outline: none;
+    border-color: #10b981;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    transform: translateY(-1px);
+}
+
+select:hover {
+    border-color: #d1d5db;
+    background: white;
+}
+
+/* Radio Buttons */
+input[type="radio"] {
+    margin-right: 8px;
+    transform: scale(1.2);
+    accent-color: #10b981;
+}
+
+/* Main Calculate Button */
+button {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+    padding: 16px 32px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    display: block;
+    margin: 2rem auto;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    min-width: 250px;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+/* Fact Display */
+div[id$="-fact"] {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-left: 4px solid #10b981;
+    padding: 12px 16px;
+    margin: 12px 0;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #1e40af;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Results Section */
+#results {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    padding: 2rem;
+    margin: 2rem 0;
+    border-radius: 12px;
+    text-align: center;
+    border: 2px solid #10b981;
+}
+
+#results h2 {
+    color: #059669;
+    margin-bottom: 1.5rem;
+    border: none;
+    padding: 0;
+}
+
+#results div {
+    margin: 1rem 0;
+    font-size: 1.1rem;
+    padding: 0.5rem;
+}
+
+/* Results Values */
+#scoreValue, #dailyEmissions, #treesDaily, #treesAnnual {
+    font-weight: bold;
+    color: #059669;
+    font-size: 1.2em;
+}
+
+/* Breakdown and Suggestions */
+#breakdown, #comparisonFact, #suggestions {
+    background: white;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 8px;
+    border-left: 4px solid #10b981;
+    text-align: left;
+}
+
+#suggestions div {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+}
+
+/* Hidden Elements */
+.hidden, [style*="display:none"], [style*="display: none"] {
+    display: none !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    div {
+        padding: 1rem;
+    }
+    
+    button {
+        width: 100%;
+        margin: 1rem auto;
+    }
+    
+    input[type="number"], select {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+}
+
+/* Smooth Transitions */
+* {
+    transition: all 0.3s ease;
+}
+
+/* Focus States for Accessibility */
+input:focus, select:focus, button:focus {
+    outline: 2px solid #10b981;
+    outline-offset: 2px;
+}
+
+/* Loading State (for future use) */
+.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* Hover Effects */
+div:hover input[type="number"], div:hover select {
+    border-color: #d1d5db;
+}

@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarbonCut - Carbon Footprint Calculator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarbonCut - Carbon Footprint Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- ADD THIS LINE -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>🌱 CarbonCut</h1>
+    <p>Track Your Carbon Footprint</p>
+  
+    <!-- Transportation -->
+    <h2> Transportation</h2>
+    <div>
+        <label>Daily Commute:</label>
+        <select id="commuteMode" onchange="showFact('transport', this.value); updateProgress();">
+            <option value="">Select mode</option>
+            <option value="metro">Metro</option>
+            <option value="bus">Bus</option>
+            <option value="car">Car</option>
+            <option value="motorcycle">Motorcycle</option>
+            <option value="walk">Walking</option>
+        </select>
+        <input type="number" id="commuteDistance" placeholder="Distance (km)" onchange="updateProgress();">
+        <div id="transport-fact" style="display:none;"></div>
+    </div>
+    
+    <div>
+        <label>Personal Vehicle:</label>
+        <select id="personalVehicle" onchange="updateProgress();">
+            <option value="">Select vehicle</option>
+            <option value="none">No vehicle</option>
+            <option value="car">Car</option>
+            <option value="motorcycle">Motorcycle</option>
+        </select>
+        <input type="number" id="personalDistance" placeholder="Daily km" onchange="updateProgress();">
+    </div>
+    
+    <!-- Energy -->
+    <h2> Home Energy</h2>
+    <div>
+        <label>AC Usage:</label>
+        <select id="acType" onchange="showFact('energy', this.value); updateProgress();">
+            <option value="">Select AC</option>
+            <option value="none">No AC</option>
+            <option value="ac_1ton">1 Ton AC</option>
+            <option value="ac_1_5ton">1.5 Ton AC</option>
+            <option value="ac_2ton">2 Ton AC</option>
+        </select>
+        <input type="number" id="acHours" placeholder="Hours/day" onchange="updateProgress();">
+        <div id="energy-fact" style="display:none;"></div>
+    </div>
+    
+    <div>
+        <label>Fans & Lights:</label>
+        <input type="number" id="fanCount" placeholder="Fans" onchange="updateProgress();">
+        <input type="number" id="fanHours" placeholder="Hours/fan" onchange="updateProgress();">
+        <input type="number" id="lightCount" placeholder="Lights" onchange="updateProgress();">
+        <input type="number" id="lightHours" placeholder="Hours/light" onchange="updateProgress();">
+    </div>
+    
+    <!-- Food -->
+    <h2> Food & Diet</h2>
+    <div>
+        <label>Diet Type:</label>
+        <input type="radio" name="dietType" value="vegetarian" onchange="selectDiet('vegetarian')"> Vegetarian
+        <input type="radio" name="dietType" value="nonvegetarian" onchange="selectDiet('nonvegetarian')"> Non-Vegetarian
+        <input type="radio" name="dietType" value="vegan" onchange="selectDiet('vegan')"> Vegan
+        <div id="diet-fact" style= "display:none;"> </div>
+    </div>
+    
+    <!-- Vegetarian Options -->
+    <div id="vegetarianOptions" style="display:none;">
+        <!-- Fixed dropdown with empty default -->
+<select id="vegDal" onchange="updateProgress();">
+    <option value="">Select Dal frequency</option>  <!-- NEW: Empty default option -->
+    <option value="0">Dal - Never</option>
+    <option value="3">Dal - 3x/week</option>
+    <option value="7">Dal - Daily</option>
+</select>
+
+        <select id="vegRice" onchange="updateProgress();">
+            <option value="">Select Rice frequency</option>
+            <option value="0">Rice - Never</option>
+            <option value="7">Rice - Daily</option>
+        </select>
+        <select id="vegVegetables" onchange="updateProgress();">
+            <option value="">Select Vegetables frequency</option>
+            <option value="7">Vegetables - Daily</option>
+            <option value="14">Vegetables - 2x daily</option>
+        </select>
+        <select id="vegDairy" onchange="updateProgress();">
+            <option value="">Select Dairy frequency</option>
+            <option value="0">Dairy - Never</option>
+            <option value="7">Dairy - Daily</option>
+        </select>
+    </div>
+    
+    <!-- Non-Vegetarian Options -->
+    <div id="nonvegetarianOptions" style="display:none;">
+        <select id="chicken" onchange="updateProgress();">
+            <option value="">Select Chicken frequency</option>
+            <option value="0">Chicken - Never</option>
+            <option value="3">Chicken - 3x/week</option>
+        </select>
+        <select id="fish" onchange="updateProgress();">
+            <option value="">Select Fish frequency</option>
+            <option value="0">Fish - Never</option>
+            <option value="2">Fish - 2x/week</option>
+        </select>
+        <select id="mutton" onchange="updateProgress();">
+            <option value="">Select Mutton frequency</option>
+            <option value="0">Mutton - Never</option>
+            <option value="1">Mutton - 1x/week</option>
+        </select>
+        <select id="eggs" onchange="updateProgress();">
+            <option value="">Select Eggs frequency</option>
+            <option value="0">Eggs - Never</option>
+            <option value="7">Eggs - Daily</option>
+        </select>
+    </div>
+    
+    <!-- Vegan Options -->
+    <div id="veganOptions" style="display:none;">
+        <select id="veganProteins" onchange="updateProgress();">
+            <option value="">Select Plant Proteins frequency</option>
+            <option value="7">Plant Proteins - Daily</option>
+            <option value="14">Plant Proteins - 2x daily</option>
+        </select>
+        <select id="plantMilk" onchange="updateProgress();">
+            <option value="">Select Plant Milk frequency</option>
+            <option value="0">Plant Milk - Never</option>
+            <option value="7">Plant Milk - Daily</option>
+        </select>
+    </div>
+    
+    <!-- Digital & Activity -->
+    <h2> Digital & Activity</h2>
+    <div>
+        <label>Screen Time:</label>
+        <input type="number" id="phoneHours" placeholder="Phone hours" onchange="showFact('digital', this.value); updateProgress();">
+        <input type="number" id="laptopHours" placeholder="Laptop hours" onchange="updateProgress();">
+        <div id="digital-fact" style="display:none;"></div>
+    </div>
+    
+    <div>
+        <label>Daily Steps:</label>
+        <input type="number" id="dailySteps" placeholder="Steps" onchange="showFact('steps', this.value); updateProgress();">
+        <div id="steps-fact" style="display:none;"></div>
+    </div>
+    
+    <!-- Calculate Button -->
+    <button onclick="calculateFootprint()">Calculate Carbon Footprint</button>
+    
+    <!-- Results -->
+    <div id="results" style="display:none;">
+        <h2>Results</h2>
+        <div>EcoScore: <span id="scoreValue">0</span>/100</div>
+        <div>Daily CO₂: <span id="dailyEmissions">0</span> kg</div>
+        <div>Trees needed daily: <span id="treesDaily">0</span></div>
+        <div>Trees needed annually: <span id="treesAnnual">0</span></div>
+        
+        <h3>Breakdown:</h3>
+        <div id="breakdown"></div>
+        
+        <h3>Comparison:</h3>
+        <div id="comparisonFact"></div>
+        
+        <h3>Suggestions:</h3>
+        <div id="suggestions"></div>
+    </div>
+
+    <script>
+        // Emission factors
+        const emissionFactors = {
+            transport: { metro: 0.03, bus: 0.08, car: 0.12, motorcycle: 0.07, walk: 0 },
+            energy: { ac_1ton: 2.5, ac_1_5ton: 3.8, ac_2ton: 5.0, fan: 0.05, light: 0.03 },
+            food: {
+                vegetarian: { base: 1.5, dal: 0.5, rice: 0.4, vegetables: 0.2, dairy: 0.9 },
+                nonvegetarian: { base: 3.2, chicken: 2.5, fish: 1.8, mutton: 8.0, eggs: 0.4 },
+                vegan: { base: 1.1, proteins: 1.2, plantMilk: 0.8 }
+            },
+            digital: { phone: 0.01, laptop: 0.05 },
+            steps: -0.00002
+        };
+
+        // Facts
+        const facts = {
+            transport: {
+                metro: "🚇 Delhi Metro saves 6.3 lakh tons of CO₂ annually!",
+                bus: "🚌 A single bus replaces 40 cars on the road!",
+                car: "🚗 Your car emits 4.6 tons of CO₂ per year!",
+                motorcycle: "🏍️ Bikes produce 60% less CO₂ than cars!",
+                walk: "🚶‍♀️ Walking is carbon-negative!"
+            },
+            energy: {
+                ac_1ton: "❄️ 1-ton AC consumes 1000 watts!",
+                ac_1_5ton: "🌡️ Raising AC temp by 1°C reduces consumption by 6%!",
+                ac_2ton: "🧊 2-ton AC uses more power than 5 homes!",
+                none: "🌿 No AC saves 2-3 kg CO₂ daily!"
+            },
+            digital: {
+                low: "📱 Your screen time is lower than 80% of people!",
+                medium: "📱 Average digital usage!",
+                high: "📱 You spend more time with devices than sleeping!"
+            },
+            steps: {
+                low: "🚶‍♀️ WHO recommends 10,000 steps daily!",
+                medium: "👟 Good walking levels!",
+                high: "🏃‍♀️ You're walking more than 99% of people!"
+            },
+            diet: {
+                vegetarian: "🌱 Vegetarians have 50% lower carbon footprint!",
+                nonvegetarian: "🍖 1kg beef = 60kg CO₂ emissions!",
+                vegan: "🌿 Plant-based diet reduces food footprint by 73%!"
+            }
+        };
+
+        // Suggestions
+        const suggestions = {
+            transport_heavy: [
+                { title: "🚇 Metro Glow-Up", description: "Switch to Metro 2 days/week", impact: "Save 1.2kg CO₂" },
+                { title: "🚶‍♀️ Walking Era", description: "Walk for trips under 3km", impact: "Save 0.8kg CO₂" }
+            ],
+            energy_heavy: [
+                { title: "❄️ AC Hack", description: "Set AC to 24°C instead of 18°C", impact: "Save 0.8kg CO₂" },
+                { title: "💡 LED Switch", description: "Use LED lights", impact: "Save 0.3kg CO₂" }
+            ],
+            food_heavy: [
+                { title: "🌱 Meatless Monday", description: "Try 2 vegetarian days per week", impact: "Save 2kg CO₂/week" },
+                { title: "🥗 Local Food", description: "Choose local/seasonal foods", impact: "Save 0.5kg CO₂" }
+            ]
+        };
+
+        let completedSections = 0;
+
+        function updateProgress() {
+            const sections = [
+                document.getElementById('commuteMode').value && document.getElementById('commuteDistance').value,
+                document.getElementById('acType').value,
+                document.querySelector('input[name="dietType"]:checked'),
+                document.getElementById('phoneHours').value && document.getElementById('dailySteps').value
+            ];
+            completedSections = sections.filter(Boolean).length;
+            document.getElementById('progress').textContent = completedSections;
+        }
+
+        function showFact(category, value) {
+    let factText = '';
+    let factElement = '';
+    
+    // Determine which fact element to target
+    switch(category) {
+        case 'transport':
+            factElement = 'transport-fact';
+            break;
+        case 'energy':
+            factElement = 'energy-fact';
+            break;
+        case 'digital':
+            factElement = 'digital-fact';
+            break;
+        case 'steps':
+            factElement = 'steps-fact';
+            break;
+    }
+    
+    if (!factElement) return;
+    
+    // If no value selected, hide the fact div
+    if (!value || value === '') {
+        document.getElementById(factElement).style.display = 'none';
+        document.getElementById(factElement).innerHTML = '';
+        return;
+    }
+    
+    // Determine fact text based on category and value
+    switch(category) {
+        case 'transport':
+            factText = facts.transport[value] || '';
+            break;
+        case 'energy':
+            factText = facts.energy[value] || '';
+            break;
+        case 'digital':
+            const hours = parseInt(value);
+            if (isNaN(hours)) {
+                factText = '';
+            } else if (hours <= 3) {
+                factText = facts.digital.low;
+            } else if (hours <= 7) {
+                factText = facts.digital.medium;
+            } else {
+                factText = facts.digital.high;
+            }
+            break;
+        case 'steps':
+            const steps = parseInt(value);
+            if (isNaN(steps)) {
+                factText = '';
+            } else if (steps < 5000) {
+                factText = facts.steps.low;
+            } else if (steps < 10000) {
+                factText = facts.steps.medium;
+            } else {
+                factText = facts.steps.high;
+            }
+            break;
+    }
+    
+    // Show or hide the fact div based on whether we have content
+    if (factText) {
+        let factDiv = document.getElementById(factElement);
+        factDiv.innerHTML = factText;
+        factDiv.style.display = 'block';
+    } else {
+        document.getElementById(factElement).style.display = 'none';
+        document.getElementById(factElement).innerHTML = '';
+    }
+}
+
+        function selectDiet(dietType) {
+    // Hide all diet options
+    document.getElementById('vegetarianOptions').style.display = 'none';
+    document.getElementById('nonvegetarianOptions').style.display = 'none';
+    document.getElementById('veganOptions').style.display = 'none';
+    
+    // Show selected diet options
+    if (dietType === 'vegetarian') {
+        document.getElementById('vegetarianOptions').style.display = 'block';
+    } else if (dietType === 'nonvegetarian') {
+        document.getElementById('nonvegetarianOptions').style.display = 'block';
+    } else if (dietType === 'vegan') {
+        document.getElementById('veganOptions').style.display = 'block';
+    }
+    
+    // Show diet fact div and set content
+    const dietFactDiv = document.getElementById('diet-fact');
+    if (dietType && dietFactDiv) {
+        dietFactDiv.innerHTML = facts.diet[dietType];
+        dietFactDiv.style.display = 'block';  // This line was missing!
+    } else if (dietFactDiv) {
+        dietFactDiv.style.display = 'none';
+        dietFactDiv.innerHTML = '';
+    }
+    
+    updateProgress();
+}
+
+
+        function calculateFootprint() {
+            // Get inputs
+            const commuteMode = document.getElementById('commuteMode').value;
+            const commuteDistance = parseFloat(document.getElementById('commuteDistance').value) || 0;
+            const personalVehicle = document.getElementById('personalVehicle').value;
+            const personalDistance = parseFloat(document.getElementById('personalDistance').value) || 0;
+            const acType = document.getElementById('acType').value;
+            const acHours = parseFloat(document.getElementById('acHours').value) || 0;
+            const fanCount = parseFloat(document.getElementById('fanCount').value) || 0;
+            const fanHours = parseFloat(document.getElementById('fanHours').value) || 0;
+            const lightCount = parseFloat(document.getElementById('lightCount').value) || 0;
+            const lightHours = parseFloat(document.getElementById('lightHours').value) || 0;
+            const dietType = document.querySelector('input[name="dietType"]:checked')?.value;
+            const phoneHours = parseFloat(document.getElementById('phoneHours').value) || 0;
+            const laptopHours = parseFloat(document.getElementById('laptopHours').value) || 0;
+            const dailySteps = parseFloat(document.getElementById('dailySteps').value) || 0;
+
+            // Calculate emissions
+            let breakdown = { transport: 0, energy: 0, food: 0, digital: 0 };
+
+            // Transport
+            if (commuteMode && commuteDistance) {
+                breakdown.transport += emissionFactors.transport[commuteMode] * commuteDistance;
+            }
+            if (personalVehicle && personalVehicle !== 'none' && personalDistance) {
+                breakdown.transport += emissionFactors.transport[personalVehicle] * personalDistance;
+            }
+
+            // Energy
+            if (acType && acType !== 'none' && acHours) {
+                breakdown.energy += emissionFactors.energy[acType] * acHours;
+            }
+            breakdown.energy += fanCount * fanHours * emissionFactors.energy.fan;
+            breakdown.energy += lightCount * lightHours * emissionFactors.energy.light;
+
+            // Food
+            if (dietType) {
+                breakdown.food += emissionFactors.food[dietType].base;
+                
+                if (dietType === 'vegetarian') {
+                    breakdown.food += (parseFloat(document.getElementById('vegDal').value) || 0) * emissionFactors.food.vegetarian.dal / 7;
+                    breakdown.food += (parseFloat(document.getElementById('vegRice').value) || 0) * emissionFactors.food.vegetarian.rice / 7;
+                    breakdown.food += (parseFloat(document.getElementById('vegVegetables').value) || 0) * emissionFactors.food.vegetarian.vegetables / 7;
+                    breakdown.food += (parseFloat(document.getElementById('vegDairy').value) || 0) * emissionFactors.food.vegetarian.dairy / 7;
+                } else if (dietType === 'nonvegetarian') {
+                    breakdown.food += (parseFloat(document.getElementById('chicken').value) || 0) * emissionFactors.food.nonvegetarian.chicken / 7;
+                    breakdown.food += (parseFloat(document.getElementById('fish').value) || 0) * emissionFactors.food.nonvegetarian.fish / 7;
+                    breakdown.food += (parseFloat(document.getElementById('mutton').value) || 0) * emissionFactors.food.nonvegetarian.mutton / 7;
+                    breakdown.food += (parseFloat(document.getElementById('eggs').value) || 0) * emissionFactors.food.nonvegetarian.eggs / 7;
+                } else if (dietType === 'vegan') {
+                    breakdown.food += (parseFloat(document.getElementById('veganProteins').value) || 0) * emissionFactors.food.vegan.proteins / 7;
+                    breakdown.food += (parseFloat(document.getElementById('plantMilk').value) || 0) * emissionFactors.food.vegan.plantMilk / 7;
+                }
+            }
+
+            // Digital
+            breakdown.digital += phoneHours * emissionFactors.digital.phone;
+            breakdown.digital += laptopHours * emissionFactors.digital.laptop;
+            breakdown.digital += dailySteps * emissionFactors.steps; // Steps bonus
+
+            const totalEmissions = breakdown.transport + breakdown.energy + breakdown.food + breakdown.digital;
+
+            // Calculate EcoScore
+            let ecoScore = 100;
+            if (totalEmissions > 6) ecoScore -= 25;
+            else if (totalEmissions > 4) ecoScore -= 15;
+            if (dailySteps > 8000) ecoScore += 10;
+            if (dietType === 'vegetarian') ecoScore += 15;
+            if (dietType === 'vegan') ecoScore += 20;
+            ecoScore = Math.max(0, Math.min(100, ecoScore));
+
+            // Trees
+            const treesDaily = Math.round(totalEmissions / 0.06);
+            const treesAnnual = treesDaily * 365;
+
+            // Display results
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('scoreValue').textContent = ecoScore;
+            document.getElementById('dailyEmissions').textContent = totalEmissions.toFixed(1);
+            document.getElementById('treesDaily').textContent = treesDaily;
+            document.getElementById('treesAnnual').textContent = treesAnnual.toLocaleString();
+
+            // Breakdown
+            document.getElementById('breakdown').innerHTML = `
+                Transport: ${breakdown.transport.toFixed(1)} kg<br>
+                Energy: ${breakdown.energy.toFixed(1)} kg<br>
+                Food: ${breakdown.food.toFixed(1)} kg<br>
+                Digital: ${breakdown.digital.toFixed(1)} kg
+            `;
+
+            // Comparison
+            const comparison = `Your daily CO₂ = ${(totalEmissions * 16.4).toFixed(0)} balloons of pure CO₂!`;
+            document.getElementById('comparisonFact').innerHTML = comparison;
+
+            // Suggestions
+            let selectedSuggestions = [];
+            if (breakdown.transport > 1.5) selectedSuggestions.push(suggestions.transport_heavy[0]);
+            if (breakdown.energy > 2) selectedSuggestions.push(suggestions.energy_heavy[0]);
+            if (breakdown.food > 3) selectedSuggestions.push(suggestions.food_heavy[0]);
+            
+            if (selectedSuggestions.length === 0) {
+                selectedSuggestions = [suggestions.transport_heavy[0], suggestions.energy_heavy[0]];
+            }
+            
+            document.getElementById('suggestions').innerHTML = selectedSuggestions.slice(0, 2).map(s => 
+                `<div><strong>${s.title}</strong><br>${s.description}<br><em>${s.impact}</em></div>`
+            ).join('<br>');
+        }
+
+//initialization
+window.onload = function() {
+    console.log('CarbonCut loaded - ready for user input');
+};
+
+    </script>
+</body>
+</html>
