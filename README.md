@@ -15,17 +15,19 @@ CarbonCut is a carbon footprint tracking web app tailored for the Indian lifesty
 
 ## 📸 Screenshots
 
-### Dashboard Screens
+### 🧩 Dashboard Screens
 
-| Dashboard 1 | Dashboard 2 | Dashboard 3 |
-|-------------|-------------|-------------|
-| <img src="./dashboard1.png" width="400"/> | <img src="./dashboard2.png" width="400"/> | <img src="./dashboard3.png" width="400"/> |
+<img src="./dashboard1.png" width="100%"/>
+<br/><br/>
+<img src="./dashboard2.png" width="100%"/>
+<br/><br/>
+<img src="./dashboard3.png" width="100%"/>
 
-### Result Screen
+---
 
-| Result |
-|--------|
-| <img src="./result.png" width="500"/> |
+### ✅ Result Screen
+
+<img src="./result.png" width="100%"/>
 
 ---
 
