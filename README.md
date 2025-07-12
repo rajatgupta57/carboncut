@@ -1,8 +1,8 @@
 # 🌱 CarbonCut – Track & Reduce Your Carbon Footprint
 
-> Submission for **Code For Bharat – Season 2**  
-> Team: **Byte By Bite**  
-> Theme: **Sustainable Tech & Climate Innovation**  
+> 🚀 Submission for **Code For Bharat – Season 2**  
+> 👥 Team: **Byte By Bite**  
+> 🎯 Theme: **Sustainable Tech & Climate Innovation** 
 > 🌐 Live: [https://dancing-sprite-d6de8b.netlify.app](https://dancing-sprite-d6de8b.netlify.app)
 
 Team Members: Rajat Gupta, Animesh Sharma, Shiv Sharma, Ayush Kumar
@@ -19,13 +19,13 @@ CarbonCut is a carbon footprint tracking web app tailored for the Indian lifesty
 
 | Dashboard 1 | Dashboard 2 | Dashboard 3 |
 |-------------|-------------|-------------|
-| <img src="./dashboard1.png" width="250"/> | <img src="./dashboard2.png" width="250"/> | <img src="./dashboard3.png" width="250"/> |
+| <img src="./dashboard1.png" width="400"/> | <img src="./dashboard2.png" width="400"/> | <img src="./dashboard3.png" width="400"/> |
 
 ### Result Screen
 
 | Result |
 |--------|
-| <img src="./result.png" width="300"/> |
+| <img src="./result.png" width="500"/> |
 
 ---
 
